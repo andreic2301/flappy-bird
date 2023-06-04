@@ -5,6 +5,15 @@ using TMPro;
 
 public class Start_game : MonoBehaviour
 {
+    TMP_Text highscoreText;
+
+    private void Start()
+    {
+        Reset_game.highScore = PlayerPrefs.GetInt("NumberHighscore");
+        highscoreText = GameObject.Find("NumberOfHighscore").GetComponent<TMP_Text>();
+        highscoreText.text = Reset_game.highScore.ToString();
+        GameObject.Find("Background").GetComponent<AudioSource>().Play();
+    }
     public void StartGame()
     {
         gameObject.SetActive(false);

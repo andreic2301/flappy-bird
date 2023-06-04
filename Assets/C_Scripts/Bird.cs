@@ -13,11 +13,15 @@ public class Bird : MonoBehaviour
 
     public int rotation;
 
+    public AudioSource Wing_Sound;
+    public AudioSource Death_Sound;
+
     
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            Wing_Sound.Play();
             speed = jump;
         }
         else
@@ -26,30 +30,7 @@ public class Bird : MonoBehaviour
         }
 
         transform.position += new Vector3(0, speed * Time.deltaTime);
-        if (rotation >= -70 && rotation <= 70)
-        {
-            if (speed > 0)
-            {
-                rotation++;
-                transform.rotation = Quaternion.Euler(0, 0, rotation);
-            }
-            else
-            {
-                rotation--;
-                transform.rotation = Quaternion.Euler(0, 0, rotation);
-            }
-        }
-        else
-        {
-            if (rotation > 70)
-            {
-                rotation = 70;
-            }
-            else
-            {
-                rotation = -70;
-            }
-        }
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Clamp(speed * 9, -45, 45));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,5 +44,7 @@ public class Bird : MonoBehaviour
         playButton.SetActive(true);
         enabled = false;
         Time.timeScale = 0;
+        GameObject.Find("Background").GetComponent<AudioSource>().Stop();
+        Death_Sound.Play();
     }
 }
